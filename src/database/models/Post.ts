@@ -14,8 +14,9 @@ Post.init({
     title: { type: DataTypes.STRING, allowNull: false },
     content: { type: DataTypes.TEXT, allowNull: false },
     userId: { type: DataTypes.INTEGER, allowNull: false, references: { model: 'users', key: 'id' } },
-}, { sequelize, modelName: 'post', timestamps: true });
+}, { sequelize, modelName: 'Post', tableName:'posts', timestamps: true });
 
+setImmediate(() => {
 Post.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
+})
 export default Post;

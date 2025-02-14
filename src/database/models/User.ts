@@ -1,5 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../../config/database';
+import Role from "./Role";
+import Post from "./Post";
 
 class User extends Model {
     public id!: number;
@@ -9,6 +11,7 @@ class User extends Model {
     public profilePicture!: string | null;
     public isVerified!: boolean;
     public verificationToken!: string | null;
+    Roles?: Role[];
 }
 
 User.init({
@@ -25,6 +28,10 @@ User.init({
         type: DataTypes.STRING,
         allowNull: true,
       },
-}, { sequelize, modelName: 'user', timestamps: true });
+}, { sequelize, modelName: 'User', tableName: 'users', timestamps: true });
 
+setImmediate(() => {
+  User.belongsToMany(Role, { through: "user_roles", foreignKey: "userId" });
+  User.hasMany(Post, { foreignKey: "userId", onDelete: "CASCADE" });
+})
 export default User;

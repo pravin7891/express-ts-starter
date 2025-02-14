@@ -34,7 +34,7 @@ LoginHistory.init(
     browserName: { type: DataTypes.STRING, allowNull: false },
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
   },
-  { sequelize, modelName: "LoginHistory" }
+  { sequelize, modelName: "LoginHistory", tableName: 'login_history' }
 );
 
 // Define association

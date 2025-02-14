@@ -1,5 +1,7 @@
+import Role from "../database/models/Role";
 import User from '../database/models/User';
 import BaseRepository from "./BaseRepository";
+import Permission from "../database/models/Permission";
 
 class UserRepository extends BaseRepository<User> {
     constructor() {
@@ -24,6 +26,18 @@ class UserRepository extends BaseRepository<User> {
     
         await user.update(data);
         return user;
-      }
+    }
+  async getUserWithRoles(userId: number) {
+    return await User.findByPk(userId, {
+      include: {
+        model: Role,
+        include: [
+            {
+                model: Permission,
+            }
+        ],
+      },
+    });
+  }
 }
 export default new UserRepository();

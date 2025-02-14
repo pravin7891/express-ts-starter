@@ -45,5 +45,5 @@ export interface AuthUser {
     id: number;
     email: string;
     loginHistoryId: number;
-    role: "user" | "admin";
+    roles: Array<string[]>;
   }

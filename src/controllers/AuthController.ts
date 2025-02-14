@@ -30,7 +30,7 @@ export default class AuthController {
     const ipAddress = req.ip || "Unknown";
             const { user, token } = await authService.login(email, password, userAgent, ipAddress);
             const { password: userpass, ...rest } = user.dataValues;
-            res.json({ user: { ...rest }, token });
+            res.status(200).json(successResponse("Loggin successful", { user: { ...rest }, token }));
         } catch (error: unknown) {
           next(error) 
         }
