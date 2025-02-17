@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from '../../config/database';
+import RolePermission from "./RolePermission";
 
 interface PermissionAttributes {
   id: number;
@@ -51,6 +52,7 @@ class Permission extends Model<PermissionAttributes, PermissionCreationAttribute
         modelName: "Permission",
       }
     );
-
-
+setImmediate(() => {
+  Permission.hasMany(RolePermission, { foreignKey: 'permissionId', as: 'rolePermissions' });
+})
 export default Permission;

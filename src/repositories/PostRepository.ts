@@ -1,6 +1,6 @@
 import Post from '../database/models/Post';
 
-export default class PostRepository {
+class PostRepository {
     async createPost(title: string, content: string, userId: number) {
         return await Post.create({ title, content, userId });
     }
@@ -21,3 +21,5 @@ export default class PostRepository {
         return await Post.destroy({ where: { id } });
     }
 }
+
+export default new PostRepository();

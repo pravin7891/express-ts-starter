@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/UserService';
 import { AuthenticatedRequest } from "types";
 import { HttpError } from "../utils/HttpError";
+import { errorResponse, successResponse } from "../utils/Responses";
 
 export default class UserController {
     async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -16,6 +17,40 @@ export default class UserController {
             next(error); 
         }
     }
+    async getMyProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+        try {
+            const userId = req.user!.id; // Extracted from JWT middleware
+
+            const user = await UserService.getProfile(userId);
+            if (!user) {
+              res.status(404).json(successResponse("user not found"));
+            }
+            const { password, ...rest} = user.dataValues;
+
+            res.status(200).json(successResponse("profile retrieved", { ...rest }));
+        } catch (error: any) {
+            next(error); 
+        }
+    }
+    async getUserProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+        try {
+            const userId = parseInt(req.params.userId, 10); // Extracted from JWT middleware
+            if (isNaN(userId)) {
+              return res.status(400).json(errorResponse("Invalid request"));
+            }
+            const user = await UserService.getProfile(userId);
+            if (!user) {
+              res.status(404).json(successResponse("user not found"));
+            }
+            const { password, ...rest} = user.dataValues;
+    
+            res.status(200).json(successResponse("profile retrieved", { ...rest }));
+        } catch (error: any) {
+            next(error); 
+        }
+    }
+
+
     updatePassword = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         try {
           const userId = req.user!.id;

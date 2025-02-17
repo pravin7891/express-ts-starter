@@ -1,7 +1,17 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Association } from "sequelize";
 import sequelize from "../../config/database";
+import Permission from "./Permission";
 
-class RolePermission extends Model {}
+class RolePermission extends Model {
+  public roleId: number | undefined;
+  public permissionId: number | undefined;
+  public permission?: Permission;
+
+  // ✅ Define association (optional for better type safety)
+  public static associations: {
+      permission: Association<RolePermission, Permission>;
+  }
+}
 
 RolePermission.init(
   {
@@ -25,5 +35,7 @@ RolePermission.init(
     timestamps: true,
   }
 );
-
+setImmediate(() => {
+RolePermission.belongsTo(Permission, { foreignKey: 'permissionId', as: 'permission' });
+})
 export default RolePermission;

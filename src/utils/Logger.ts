@@ -32,6 +32,7 @@ const logger = winston.createLogger({
 
 export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
   logger.info(`${req.method} ${req.url} from ${req.ip}`);
+  console.log("Req.body: ", req.body);
   next();
 };
 

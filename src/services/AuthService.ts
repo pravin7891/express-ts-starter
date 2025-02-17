@@ -25,7 +25,7 @@ export default class AuthService {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         userData.password = hashedPassword;
-        const newUser = await UserRepository.createUser({
+        const newUser = await UserRepository.create({
             ...userData,
             profilePicture: profilePictureUrl
         });

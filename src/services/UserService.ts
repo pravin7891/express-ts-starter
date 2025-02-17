@@ -31,6 +31,9 @@ class UserService {
         // Update user profile picture
         return UserRepository.update(userId, { profilePicture: imageUrl });
       }
+    async getProfile(userId: number): Promise<any> {
+        return await UserRepository.findById(userId);
+    }
 }
 
 export default new UserService();

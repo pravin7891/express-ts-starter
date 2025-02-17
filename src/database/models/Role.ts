@@ -1,6 +1,8 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelize from "../../config/database";
 import User from "./User";
+import Permission from "./Permission";
+import UserRole from "./UserRole";
 
 interface RoleAttributes {
   id: number;
@@ -20,6 +22,8 @@ class Role extends Model {
   public description?: string;
   public createdAt!: Date;
   public updatedAt!: Date;
+  // ✅ Explicitly declare the `permissions` property
+  public permissions?: Permission[];
 }
 Role.init(
   {
@@ -54,6 +58,8 @@ Role.init(
   }
 );
 setImmediate(() => {
+  Role.hasMany(UserRole);
 Role.belongsToMany(User, { through: "user_roles", foreignKey: "roleId" });
+Role.belongsToMany(Permission, { through: "role_permissions", as: "permissions" });
 });
 export default Role;

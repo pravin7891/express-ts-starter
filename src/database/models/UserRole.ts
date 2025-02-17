@@ -1,7 +1,16 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Association } from "sequelize";
 import sequelize from "../../config/database";
+import Role from "./Role";
 
-class UserRole extends Model {}
+class UserRole extends Model {
+  userId: number | undefined;
+  roleId: number | undefined;
+  public role?: Role;
+  // ✅ Define association (optional for better type safety)
+  public static associations: {
+    role: Association<UserRole, Role>;
+  }
+}
 
 UserRole.init(
   {
@@ -25,5 +34,7 @@ UserRole.init(
     timestamps: true,
   }
 );
-
+setImmediate(() => {
+  UserRole.belongsTo(Role, { foreignKey: 'roleId', as: 'role' });
+  })
 export default UserRole;

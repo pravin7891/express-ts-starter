@@ -1,8 +1,5 @@
-import PostRepository from '../repositories/PostRepository';
+import postRepository from '../repositories/PostRepository';
 import { io } from '../server';
-
-const postRepository = new PostRepository();
-
 export default class PostService {
     async createPost(title: string, content: string, userId: number) {
         const post = await postRepository.createPost(title, content, userId);

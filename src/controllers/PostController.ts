@@ -8,8 +8,8 @@ const postService = new PostService();
 export default class PostController {
     async createPost(req: AuthenticatedRequest, res: Response, next: NextFunction) {
         try {
-            if(!req.user) {throw new HttpError(400, "bad request");}
             const { title, content } = req.body;
+            console.log("req.body", req.body);
             const userId = req.user!.id; // Assuming user ID is attached by auth middleware
             const post = await postService.createPost(title, content, userId);
             res.status(201).json(post);

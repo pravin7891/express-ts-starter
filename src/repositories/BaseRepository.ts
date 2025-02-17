@@ -10,6 +10,10 @@ class BaseRepository<T extends Model> {
   async findAll(options?: FindOptions<T>) {
     return this.model.findAll(options);
   }
+  
+  async findAndCountAll(options?: FindOptions<T>) {
+    return this.model.findAndCountAll(options);
+  }
 
   async findById(id: number, options?: FindOptions<T>) {
     return this.model.findByPk(id, options);

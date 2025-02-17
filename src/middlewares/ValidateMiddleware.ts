@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { errorResponse } from "../utils/Responses";
 import { ZodError, ZodSchema } from "zod";
 
 // const formatZodErrors = (error: ZodError) => {
@@ -17,11 +18,10 @@ const validate =
   (schema: ZodSchema, type: "body" | "query" | "params" = "body") =>
   (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req[type]);
-    console.log("result: ", result);
     if (!result.success) {
         //console.log("result: ", formatZodErrors(result.error))
 
-      return res.status(400).json({ errors: formatZodErrors(result.error) });
+      return res.status(400).json(errorResponse("invalid data", formatZodErrors(result.error)));
     }
 
     next();

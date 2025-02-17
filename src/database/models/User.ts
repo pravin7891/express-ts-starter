@@ -11,7 +11,7 @@ class User extends Model {
     public profilePicture!: string | null;
     public isVerified!: boolean;
     public verificationToken!: string | null;
-    Roles?: Role[];
+    public roles?: Role[];
 }
 
 User.init({
@@ -31,7 +31,8 @@ User.init({
 }, { sequelize, modelName: 'User', tableName: 'users', timestamps: true });
 
 setImmediate(() => {
-  User.belongsToMany(Role, { through: "user_roles", foreignKey: "userId" });
+  User.belongsToMany(Role, { through: "user_roles", foreignKey: "userId", as: "roles" });
   User.hasMany(Post, { foreignKey: "userId", onDelete: "CASCADE" });
+  Role.belongsToMany(User, { through: "UserRoles", as: "users" });
 })
 export default User;

@@ -13,6 +13,7 @@ export async function up(queryInterface: QueryInterface) {
     },
     description: {
       type: DataTypes.STRING,
+      allowNull: true
     },
     createdAt: {
       allowNull: false,

@@ -13,6 +13,10 @@ export async function up(queryInterface: QueryInterface) {
       name: {
         type: DataTypes.STRING
       },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
