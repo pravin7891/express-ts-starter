@@ -8,6 +8,7 @@ class User extends Model {
     public name!: string;
     public email!: string;
     public password!: string;
+    public timezone!: string;
     public profilePicture!: string | null;
     public isVerified!: boolean;
     public verificationToken!: string | null;
@@ -19,6 +20,10 @@ User.init({
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
+    timezone: {
+      type: DataTypes.STRING,
+      allowNull: true, // Store "America/New_York", "Asia/Kolkata", etc.
+    },
     profilePicture: { type: DataTypes.STRING, allowNull: true },
     isVerified: {
         type: DataTypes.BOOLEAN,

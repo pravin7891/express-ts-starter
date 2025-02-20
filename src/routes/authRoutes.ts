@@ -1,7 +1,7 @@
 import { NextFunction, Router } from 'express';
 import AuthController from "../controllers/AuthController";
 import validate from "../middlewares/ValidateMiddleware";
-import { userLoginSchema, userRegisterSchema } from "../schemas/authSchema";
+import { userLoginSchema, userRegisterSchema, sendOtpSchema } from "../schemas/authSchema";
 const router = Router();
 const authController = new AuthController();
 import upload from "../middlewares/UploadMiddleware";
@@ -14,6 +14,7 @@ router.post('/register', upload.single("file"), (req, res, next) => {
     //   return res.status(400).json({ errors: formatZodErrors(result.error) });
     // }
 }, validate(userRegisterSchema), authController.register);
+router.post("/send-otp", validate(sendOtpSchema), authController.sendOtp); // Request OTP
 router.post('/login', validate(userLoginSchema), authController.login);
 router.get("/verify-email", authController.verifyEmailHandler);
 export default router;

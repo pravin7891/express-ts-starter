@@ -1,26 +1,25 @@
-require("dotenv").config();
-const path = require("path");
+require("dotenv").config(); // Load environment variables
 
-// // Fix the path to `database.ts` by using `path.resolve`
-// const sequelize = require(path.resolve(__dirname, "./database")).default;
-// Use compiled JavaScript version
-const sequelize = require(path.resolve(__dirname, "../../dist/config/database")).default;
+const isPostgres = process.env.DB_DIALECT === "postgres";
 
 module.exports = {
   development: {
-    dialect: sequelize.getDialect(),
-    storage: sequelize.options.storage, // For SQLite
-    username: process.env.DB_USER || "root",
-    password: process.env.DB_PASS || null,
-    database: process.env.DB_NAME || "my_database",
-    host: process.env.DB_HOST || "127.0.0.1",
+    dialect: isPostgres ? "postgres" : "sqlite",
+    storage: isPostgres ? undefined : process.env.DB_STORAGE,
+    host: isPostgres ? process.env.DB_HOST : undefined,
+    port: isPostgres ? process.env.DB_PORT : undefined,
+    database: isPostgres ? process.env.DB_NAME : undefined,
+    username: isPostgres ? process.env.DB_USER : undefined,
+    password: isPostgres ? process.env.DB_PASS : undefined,
+    logging: false,
   },
   production: {
-    dialect: sequelize.getDialect(),
-    storage: sequelize.options.storage,
+    dialect: "postgres",
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
+    logging: false,
   },
 };

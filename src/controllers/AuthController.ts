@@ -25,14 +25,25 @@ export default class AuthController {
     };
     async login(req: Request, res: Response, next: NextFunction) {
         try {
-            const { email, password }: LoginRequest = req.body;
+            const { email, password, otp }: LoginRequest = req.body;
             const userAgent = req.headers["user-agent"] || "";
-    const ipAddress = req.ip || "Unknown";
-            const { user, token } = await authService.login(email, password, userAgent, ipAddress);
+            const ipAddress = req.ip || "Unknown";
+            const { user, token } = await authService.login(email, password || "", otp || "", userAgent, ipAddress);
             const { password: userpass, ...rest } = user.dataValues;
             res.status(200).json(successResponse("Loggin successful", { user: { ...rest }, token }));
         } catch (error: unknown) {
           next(error) 
         }
+    }
+
+    async sendOtp(req: Request, res: Response, next: NextFunction) {
+      try {
+        const { email } = req.body;
+        await authService.sendOtp(email)
+        
+        return res.json(successResponse("OTP sent successfully!"));
+        } catch (error: unknown) {
+        next(error) 
+      }
     }
 }

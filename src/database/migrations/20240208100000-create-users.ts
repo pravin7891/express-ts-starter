@@ -6,11 +6,12 @@ export async function up(queryInterface: QueryInterface) {
         name: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false, unique: true },
         password: { type: DataTypes.STRING, allowNull: false },
+        timezone: { type: DataTypes.STRING, allowNull: true, defaultValue: '+00:00' },
         profilePicture: { type: DataTypes.STRING, allowNull: true },
-        createdAt: { allowNull: false, type: DataTypes.DATE },
-        updatedAt: { allowNull: false, type: DataTypes.DATE },
         isVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
         verificationToken: { type: DataTypes.STRING,  allowNull: true },
+        createdAt: { allowNull: false, type: DataTypes.DATE },
+        updatedAt: { allowNull: false, type: DataTypes.DATE },
     });
 }
 

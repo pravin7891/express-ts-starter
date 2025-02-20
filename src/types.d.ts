@@ -11,7 +11,8 @@ export interface AuthUser {
   
   export interface LoginRequest {
     email: string;
-    password: string;
+    password?: string;
+    otp?: string;
   }
   
   export interface RegisterRequest extends LoginRequest {

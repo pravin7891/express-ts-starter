@@ -6,6 +6,7 @@ export async function up(queryInterface: QueryInterface) {
         title: { type: DataTypes.STRING, allowNull: false },
         content: { type: DataTypes.TEXT, allowNull: false },
         userId: { type: DataTypes.INTEGER, allowNull: false, references: { model: 'users', key: 'id' }, onUpdate: 'CASCADE', onDelete: 'CASCADE' },
+        publishedDateTime: { allowNull: false, type: DataTypes.DATE },
         createdAt: { allowNull: false, type: DataTypes.DATE },
         updatedAt: { allowNull: false, type: DataTypes.DATE },
     });

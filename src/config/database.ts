@@ -2,19 +2,10 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
+import databaseConfig from "../config/config"; // Import config.js
 
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './database.sqlite'
-});
+const env = process.env.NODE_ENV || "development"; // Default to development
+const config = (databaseConfig as any)[env]; // Get the config for the current env
+const sequelize = new Sequelize(config);
 
 export default sequelize;
-// import { Sequelize } from "sequelize";
-
-// const sequelize = new Sequelize({
-//   dialect: "sqlite", // or "mysql" / "postgres"
-//   storage: "./database.sqlite", // Change based on your database
-//   logging: false,
-// });
-
-// export default sequelize;

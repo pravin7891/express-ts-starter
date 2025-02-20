@@ -3,6 +3,7 @@ import UserService from '../services/UserService';
 import { AuthenticatedRequest } from "types";
 import { HttpError } from "../utils/HttpError";
 import { errorResponse, successResponse } from "../utils/Responses";
+import DateHelper from "../utils/Date";
 
 export default class UserController {
     async updateProfile(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -23,10 +24,12 @@ export default class UserController {
 
             const user = await UserService.getProfile(userId);
             if (!user) {
-              res.status(404).json(successResponse("user not found"));
+              res.status(404).json(errorResponse("user not found"));
             }
             const { password, ...rest} = user.dataValues;
-
+            console.log("Usr: ", req.user);
+            // console.log("Created AT TZ", DateHelper.format(rest.createdAt, 'dddd, MMMM D, YYYY h:mm A'))
+            console.log("Created AT TZ", DateHelper.fromUTCToTimezone(rest.createdAt, "-1430", "dddd, MMMM D, YYYY h:mm A"))
             res.status(200).json(successResponse("profile retrieved", { ...rest }));
         } catch (error: any) {
             next(error); 
@@ -40,7 +43,7 @@ export default class UserController {
             }
             const user = await UserService.getProfile(userId);
             if (!user) {
-              res.status(404).json(successResponse("user not found"));
+              res.status(404).json(errorResponse("user not found"));
             }
             const { password, ...rest} = user.dataValues;
     
@@ -68,7 +71,7 @@ export default class UserController {
           const { id: userId } = req.user!;
           const file = req.file;
     
-          if (!file) return res.status(400).json({ error: 'No file uploaded' });
+          if (!file) throw new HttpError(400, 'No file uploaded');
     
           const updatedUser = await UserService.updateProfilePicture(userId, file);
     
